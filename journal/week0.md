@@ -26,3 +26,8 @@ aws sns subscribe \
 ```
 It should return pending confirmation. When you add a notification receipient like email, it wants to verify it.
 Make sure you choose the right AWS region then go to SNS -> Topics to view the pending confirmation. Then confirm it via the email it sent.
+
+After that create the cloudwatch alarm:
+```
+aws cloudwatch put-metric-alarm --cli-input-json file://aws/json/alarm-config.json
+```
