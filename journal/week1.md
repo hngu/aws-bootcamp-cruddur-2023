@@ -39,3 +39,9 @@ docker run --rm -p 4567:4567 -it  -e FRONTEND_URL -e BACKEND_URL backend-flask
 - The `--rm` means to run a container and then once it terminates it removes the container. Leave out `--rm` if you want the container to persist
 - The `-e` means to pass environment variables from current terminal session to the container. You can also pass override values like `FRONTEND_URL='*'`
 - The `-it` will open a terminal session to that container once the container starts running
+
+### Verify it works
+- Once it is running, go to VSCode Ports tab and unlock the 4567 port
+- Then go to the address listed in the port tab
+- Append `/api/activities/home` so it would be like: `https://4567-hngu-awsbootcampcrudd-erzhftk1w1y.ws-us110.gitpod.io/api/activities/home`
+- You should see some JSON
