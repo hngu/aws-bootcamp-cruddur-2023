@@ -350,4 +350,9 @@ You should see two ports in the ports tab: one for FE and one for BE. Click and 
 
 Typically, get Dockerfiles ready then have the docker-compose to build and run them
 
-# 
+### CloudTrail
+- For this free class, avoid creating a cloud trail instance
+- If you have to, then select the following to keep costs as low as possible:
+  - unselect log file encryption
+  - for events, do not select data events and insight events
+- these recommendations are only for this class. You should turn on CloudTrail with the recommended settings for a production environment 
