@@ -356,3 +356,10 @@ Typically, get Dockerfiles ready then have the docker-compose to build and run t
   - unselect log file encryption
   - for events, do not select data events and insight events
 - these recommendations are only for this class. You should turn on CloudTrail with the recommended settings for a production environment 
+
+
+### S3 empty bucket cost
+- Lesson 1: anyone who knows the name of any of your S3 buckets can ramp up your AWS bill
+- Lesson 2: adding a random suffix to your bucket names can enhance security
+- Lesson 3: when executing a lot of requests to S3, make sure to explicitly specify the AWS region
+- S3 charges for unauthorized requests (4xx) as well. So if you open a terminal and type: `aws s3 cp ./file.txt s3://your-bucket-name/random_key` that counts
