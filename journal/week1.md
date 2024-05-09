@@ -369,10 +369,13 @@ Typically, get Dockerfiles ready then have the docker-compose to build and run t
 - Use AWS Secret Manager for supported AWS service, Hashicorp Vault otherwise
 - AWS Secret Manager has a cost to them after 30 days
 - Turn on automatic rotation
+- Use AWS Inspector to scan for image vulnerabilities (has cost after 15 days)
+- Consider Sync Container Security
 
 ### Docker Components
 <img width="859" alt="Screenshot 2024-05-09 at 1 54 07 PM" src="https://github.com/hngu/aws-bootcamp-cruddur-2023/assets/725417/425cb034-7b24-42e1-83b7-effd1df6e85a">
-- There are 2 main components: Docker client and Docker server
+
+There are 2 main components: Docker client and Docker server
 
 ### Top 10 Best Security Practices
 1. Keeping Host and Docker updated to latest security patches
