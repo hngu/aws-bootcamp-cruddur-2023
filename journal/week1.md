@@ -363,3 +363,27 @@ Typically, get Dockerfiles ready then have the docker-compose to build and run t
 - Lesson 2: adding a random suffix to your bucket names can enhance security
 - Lesson 3: when executing a lot of requests to S3, make sure to explicitly specify the AWS region
 - S3 charges for unauthorized requests (4xx) as well. So if you open a terminal and type: `aws s3 cp ./file.txt s3://your-bucket-name/random_key` that counts
+
+# Docker Security Best Practices
+- Consider Sync Open Source Vulnerability
+- Use AWS Secret Manager for supported AWS service, Hashicorp Vault otherwise
+- AWS Secret Manager has a cost to them after 30 days
+- Turn on automatic rotation
+
+### Docker Components
+<img width="859" alt="Screenshot 2024-05-09 at 1 54 07 PM" src="https://github.com/hngu/aws-bootcamp-cruddur-2023/assets/725417/425cb034-7b24-42e1-83b7-effd1df6e85a">
+- There are 2 main components: Docker client and Docker server
+
+### Top 10 Best Security Practices
+1. Keeping Host and Docker updated to latest security patches
+2. Docker container and daemon should run in non-root user mode
+3. image vulnerability scanning
+4. trusting a private vs public image registry
+5. No sensitive data in docker files or images
+6. use secret management services to share secret
+7. read only file system and volume for Docker
+8. separate database for long term storage
+9. use DevSecOps practices while building application security
+10. ensure all code is tested for vulnerability before production
+
+
