@@ -394,6 +394,9 @@ There are 2 main components: Docker client and Docker server
 2. Then run `docker compose up`
 3. Open the app at port 3000
 4. If you have not done so, click Join Now
-5. 
+5. Confirmation code is 1234
+
+### DynamoDB and Postgres
+
 
 
