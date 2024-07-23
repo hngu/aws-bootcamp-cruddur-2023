@@ -430,3 +430,11 @@ Get all records
 ```
 aws dynamodb scan --table-name Music --query "Items" --endpoint-url http://localhost:8000
 ```
+
+### Postgres local
+When working with gitpod or other Cloud IDE, you need to install the postgres client to connect to the postgres local server. To do that, you need to update the `gitpod.yml` file with the client driver install.
+
+Additionally, when connecting to postgres in gitpod context, you have to run the following command:
+```
+psql -Upostgres --host localhost
+```
