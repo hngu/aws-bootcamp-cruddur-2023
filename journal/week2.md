@@ -108,7 +108,22 @@ aws xray get-service-graph --start-time $(($EPOCH-600)) --end-time $EPOCH
 
 ## HoneyComb
 
-When creating a new dataset in Honeycomb it will provide all these installation insturctions
+When creating a new dataset in Honeycomb it will provide all these installation instructions
+
+Add the following Env Vars to `backend-flask` in docker compose
+
+```yml
+OTEL_EXPORTER_OTLP_ENDPOINT: "https://api.honeycomb.io"
+OTEL_EXPORTER_OTLP_HEADERS: "x-honeycomb-team=${HONEYCOMB_API_KEY}"
+OTEL_SERVICE_NAME: "backend-flask"
+```
+
+You'll need to grab the API key from your honeycomb account and export them like so (gp is for gitpod so that it will be available again when relaunching):
+
+```sh
+export HONEYCOMB_API_KEY=""
+gp env HONEYCOMB_API_KEY=""
+```
 
 
 
@@ -154,23 +169,6 @@ tracer = trace.get_tracer(__name__)
 app = Flask(__name__)
 FlaskInstrumentor().instrument_app(app)
 RequestsInstrumentor().instrument()
-```
-
-Add teh following Env Vars to `backend-flask` in docker compose
-
-```yml
-OTEL_EXPORTER_OTLP_ENDPOINT: "https://api.honeycomb.io"
-OTEL_EXPORTER_OTLP_HEADERS: "x-honeycomb-team=${HONEYCOMB_API_KEY}"
-OTEL_SERVICE_NAME: "${HONEYCOMB_SERVICE_NAME}"
-```
-
-You'll need to grab the API key from your honeycomb account:
-
-```sh
-export HONEYCOMB_API_KEY=""
-export HONEYCOMB_SERVICE_NAME="Cruddur"
-gp env HONEYCOMB_API_KEY=""
-gp env HONEYCOMB_SERVICE_NAME="Cruddur"
 ```
 
 ## CloudWatch Logs
