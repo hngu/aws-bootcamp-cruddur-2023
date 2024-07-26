@@ -92,6 +92,8 @@ aws cloudwatch put-metric-alarm --cli-input-json file://aws/json/alarm-config.js
 - Once that is installed, enable auto prompt via: `aws --cli-auto-prompt`
 - When you run `aws sts get-caller-identity` you should get an error since there is no identity set in gitpod
 - Take the AWS Access keys and export them (remember to add quotes around the values!)
+- In gitpod, we have a `.gitpod.yml` file to setup the aws-cli
+- We also use `gp env` to store the env variables
 
 ### Task: Create a billing and budget alarm
 - In your root account, make sure you have billing alert enabled under billing preferences
