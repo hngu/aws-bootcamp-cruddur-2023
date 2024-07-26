@@ -318,4 +318,12 @@ https://github.com/omenking/aws-bootcamp-cruddur-2023/blob/week-x/backend-flask/
 - Honeycomb has a paid service called a service map that can visualize what services talk to all other services. This is only if you have a lot of services so no need to have this in this small app.
 - Intrumentation is the code that you install that produces this trace information
 - Amazon X-Ray is very hard to integrate so we choose Honeycomb
+- When you 
+
+## Honeycomb
+- when you first login, the app creates a default env called test and each API key is scoped to an environment
+- when you export a variable like `export TEST=1` the export command makes it available in the current shell, and any subshells. If you don't then it will only be available in the current shell
+- Once you have setup your API key, we need to set the `OTEL_` environment variables (Open Telemetry)
+- Open telemetry is an open source standard for specifying the schema for sending instrumentation. The standard was created so that one can migrate from one observability service to another
+- The `${}` will take environment variables from the shell where `docker-compose up` is run
 - 
