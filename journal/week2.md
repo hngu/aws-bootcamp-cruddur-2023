@@ -107,8 +107,7 @@ aws xray get-service-graph --start-time $(($EPOCH-600)) --end-time $EPOCH
 ```
 
 ## HoneyComb
-
-When creating a new dataset in Honeycomb it will provide all these installation instructions
+When creating a new dataset in Honeycomb it will provide all these **installation instructions** but will outline these here anyway:
 
 Add the following Env Vars to `backend-flask` in docker compose
 
@@ -125,9 +124,7 @@ export HONEYCOMB_API_KEY=""
 gp env HONEYCOMB_API_KEY=""
 ```
 
-
-
-We'll add the following files to our `requirements.txt`
+We'll add the following libraries to our `requirements.txt`
 
 ```
 opentelemetry-api 
@@ -143,9 +140,10 @@ We'll install these dependencies:
 pip install -r requirements.txt
 ```
 
-Add to the `app.py`
+Add the following code blocks to `app.py`
 
 ```py
+# Honeycomb ------------------
 from opentelemetry import trace
 from opentelemetry.instrumentation.flask import FlaskInstrumentor
 from opentelemetry.instrumentation.requests import RequestsInstrumentor
@@ -156,6 +154,7 @@ from opentelemetry.sdk.trace.export import BatchSpanProcessor
 
 
 ```py
+# Honeycomb ------------------
 # Initialize tracing and an exporter that can send data to Honeycomb
 provider = TracerProvider()
 processor = BatchSpanProcessor(OTLPSpanExporter())
@@ -165,6 +164,7 @@ tracer = trace.get_tracer(__name__)
 ```
 
 ```py
+# Honeycomb ------------------
 # Initialize automatic instrumentation with Flask
 app = Flask(__name__)
 FlaskInstrumentor().instrument_app(app)
