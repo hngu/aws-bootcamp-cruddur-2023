@@ -171,6 +171,21 @@ FlaskInstrumentor().instrument_app(app)
 RequestsInstrumentor().instrument()
 ```
 
+Add the following to your `.gitpod.yml` so you can open these ports by default:
+```
+ports:
+  - name: frontend
+    port: 3000
+    onOpen: open-browser
+    visibility: public
+  - name: backend
+    port: 4567
+    visibility: public
+  - name: xray-daemon
+    port: 2000
+    visibility: public
+```
+
 ## CloudWatch Logs
 
 
