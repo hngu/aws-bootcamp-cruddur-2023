@@ -303,6 +303,8 @@ volumes:
 - Jfrog - for storing artifacts or binaries like jars or libraries
 - Docker VSCode extension recommended
 - Each command in Dockerfile creates a layer that gets unified
+- Best practice: have a Dockerfile for each environment
+- Best practice: build the container separate from running the container in the Dockerfile
 
 **CMD vs RUN**
 - CMD will run something in the container
@@ -390,7 +392,7 @@ There are 2 main components: Docker client and Docker server
 10. ensure all code is tested for vulnerability before production
 
 ### Running the app
-1. Go to FE code and run `npm i` (not sure why react-scripts isn't picked up in docker)
+1. Go to FE code and run `npm i` (not sure why react-scripts isn't picked up in docker). **ANSWER**: because in our `docker-compose.yml` file, we are mounting our local FE directory to the docker container's working directory. That will overwrite anything that is in the container's directory with our work, and since there is no `node_modules` in our host machine, the container won't have it either. This is so that we can use the same Dockerfile for both local and production. You should have a different Dockerfile for both local and production. Building a unified container is only if you are sharing it with other colleagues to make sure their environments matches yours.
 2. Then run `docker compose up`
 3. Open the app at port 3000
 4. If you have not done so, click Join Now
