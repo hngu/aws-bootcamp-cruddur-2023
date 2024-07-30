@@ -109,19 +109,20 @@ aws xray get-service-graph --start-time $(($EPOCH-600)) --end-time $EPOCH
 ## HoneyComb
 When creating a new dataset in Honeycomb it will provide all these **installation instructions** but will outline these here anyway:
 
-Add the following Env Vars to `backend-flask` in docker compose
-
-```yml
-OTEL_EXPORTER_OTLP_ENDPOINT: "https://api.honeycomb.io"
-OTEL_EXPORTER_OTLP_HEADERS: "x-honeycomb-team=${HONEYCOMB_API_KEY}"
-OTEL_SERVICE_NAME: "backend-flask"
-```
-
 You'll need to grab the API key from your honeycomb account and export them like so (gp is for gitpod so that it will be available again when relaunching):
 
 ```sh
 export HONEYCOMB_API_KEY=""
 gp env HONEYCOMB_API_KEY=""
+```
+
+Add the following Env Vars to `backend-flask` in docker compose file
+
+```yml
+OTEL_EXPORTER_OTLP_ENDPOINT: "https://api.honeycomb.io"
+OTEL_EXPORTER_OTLP_HEADERS: "x-honeycomb-team=${HONEYCOMB_API_KEY}"
+OTEL_SERVICE_NAME: "backend-flask"
+OTEL_EXPORTER_OTLP_PROTOCOL: "http/protobuf"
 ```
 
 We'll add the following libraries to our `requirements.txt`

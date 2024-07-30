@@ -1,2 +1,5 @@
 flask
 flask-cors
+opentelemetry-instrumentation
+opentelemetry-distro
+opentelemetry-exporter-otlp
