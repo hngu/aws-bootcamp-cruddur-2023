@@ -340,4 +340,6 @@ https://github.com/omenking/aws-bootcamp-cruddur-2023/blob/week-x/backend-flask/
 - Once you have setup your API key, we need to set the `OTEL_` environment variables (Open Telemetry)
 - Open telemetry is an open source standard for specifying the schema for sending instrumentation. The standard was created so that one can migrate from one observability service to another
 - The `${}` will take environment variables from the shell where `docker-compose up` is run
-- 
+
+## Observability
+- 3 pillars: metrics, traces, logs
