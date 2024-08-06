@@ -1,14 +1,90 @@
 # Week 2 — Distributed Tracing
 
+
+## HoneyComb
+When creating a new dataset in Honeycomb it will provide all these **installation instructions** but will outline these here anyway:
+
+You'll need to grab the API key from your honeycomb account and export them like so (gp is for gitpod so that it will be available again when relaunching):
+
+```sh
+export HONEYCOMB_API_KEY=""
+gp env HONEYCOMB_API_KEY=""
+```
+
+Add the following Env Vars to `backend-flask` in docker compose file
+
+```yml
+OTEL_EXPORTER_OTLP_ENDPOINT: "https://api.honeycomb.io"
+OTEL_EXPORTER_OTLP_HEADERS: "x-honeycomb-team=${HONEYCOMB_API_KEY}"
+OTEL_SERVICE_NAME: "backend-flask"
+OTEL_EXPORTER_OTLP_PROTOCOL: "http/protobuf"
+```
+
+We'll add the following libraries to our `requirements.txt`
+
+```
+opentelemetry-api 
+opentelemetry-sdk 
+opentelemetry-exporter-otlp-proto-http 
+opentelemetry-instrumentation-flask 
+opentelemetry-instrumentation-requests
+```
+
+We'll install these dependencies:
+
+```sh
+pip install -r requirements.txt
+```
+
+Add the following code blocks to `app.py`
+
+```py
+# Honeycomb ------------------
+from opentelemetry import trace
+from opentelemetry.instrumentation.flask import FlaskInstrumentor
+from opentelemetry.instrumentation.requests import RequestsInstrumentor
+from opentelemetry.exporter.otlp.proto.http.trace_exporter import OTLPSpanExporter
+from opentelemetry.sdk.trace import TracerProvider
+from opentelemetry.sdk.trace.export import BatchSpanProcessor
+```
+
+
+```py
+# Honeycomb ------------------
+# Initialize tracing and an exporter that can send data to Honeycomb
+provider = TracerProvider()
+processor = BatchSpanProcessor(OTLPSpanExporter())
+provider.add_span_processor(processor)
+trace.set_tracer_provider(provider)
+tracer = trace.get_tracer(__name__)
+```
+
+```py
+# Honeycomb ------------------
+# Initialize automatic instrumentation with Flask
+app = Flask(__name__)
+FlaskInstrumentor().instrument_app(app)
+RequestsInstrumentor().instrument()
+```
+
+Add the following to your `.gitpod.yml` so you can open these ports by default:
+```
+ports:
+  - name: frontend
+    port: 3000
+    onOpen: open-browser
+    visibility: public
+  - name: backend
+    port: 4567
+    visibility: public
+  - name: xray-daemon
+    port: 2000
+    visibility: public
+```
+
 ## X-Ray
 
 ### Instrument AWS X-Ray for Flask
-
-
-```sh
-export AWS_REGION="ca-central-1"
-gp env AWS_REGION="ca-central-1"
-```
 
 Add to the `requirements.txt`
 
@@ -20,6 +96,11 @@ Install pythonpendencies
 
 ```sh
 pip install -r requirements.txt
+```
+
+```sh
+export AWS_REGION="ca-central-1"
+gp env AWS_REGION="ca-central-1"
 ```
 
 Add to `app.py`
@@ -106,86 +187,6 @@ EPOCH=$(date +%s)
 aws xray get-service-graph --start-time $(($EPOCH-600)) --end-time $EPOCH
 ```
 
-## HoneyComb
-When creating a new dataset in Honeycomb it will provide all these **installation instructions** but will outline these here anyway:
-
-You'll need to grab the API key from your honeycomb account and export them like so (gp is for gitpod so that it will be available again when relaunching):
-
-```sh
-export HONEYCOMB_API_KEY=""
-gp env HONEYCOMB_API_KEY=""
-```
-
-Add the following Env Vars to `backend-flask` in docker compose file
-
-```yml
-OTEL_EXPORTER_OTLP_ENDPOINT: "https://api.honeycomb.io"
-OTEL_EXPORTER_OTLP_HEADERS: "x-honeycomb-team=${HONEYCOMB_API_KEY}"
-OTEL_SERVICE_NAME: "backend-flask"
-OTEL_EXPORTER_OTLP_PROTOCOL: "http/protobuf"
-```
-
-We'll add the following libraries to our `requirements.txt`
-
-```
-opentelemetry-api 
-opentelemetry-sdk 
-opentelemetry-exporter-otlp-proto-http 
-opentelemetry-instrumentation-flask 
-opentelemetry-instrumentation-requests
-```
-
-We'll install these dependencies:
-
-```sh
-pip install -r requirements.txt
-```
-
-Add the following code blocks to `app.py`
-
-```py
-# Honeycomb ------------------
-from opentelemetry import trace
-from opentelemetry.instrumentation.flask import FlaskInstrumentor
-from opentelemetry.instrumentation.requests import RequestsInstrumentor
-from opentelemetry.exporter.otlp.proto.http.trace_exporter import OTLPSpanExporter
-from opentelemetry.sdk.trace import TracerProvider
-from opentelemetry.sdk.trace.export import BatchSpanProcessor
-```
-
-
-```py
-# Honeycomb ------------------
-# Initialize tracing and an exporter that can send data to Honeycomb
-provider = TracerProvider()
-processor = BatchSpanProcessor(OTLPSpanExporter())
-provider.add_span_processor(processor)
-trace.set_tracer_provider(provider)
-tracer = trace.get_tracer(__name__)
-```
-
-```py
-# Honeycomb ------------------
-# Initialize automatic instrumentation with Flask
-app = Flask(__name__)
-FlaskInstrumentor().instrument_app(app)
-RequestsInstrumentor().instrument()
-```
-
-Add the following to your `.gitpod.yml` so you can open these ports by default:
-```
-ports:
-  - name: frontend
-    port: 3000
-    onOpen: open-browser
-    visibility: public
-  - name: backend
-    port: 4567
-    visibility: public
-  - name: xray-daemon
-    port: 2000
-    visibility: public
-```
 
 ## CloudWatch Logs
 
