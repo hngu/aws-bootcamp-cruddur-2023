@@ -98,11 +98,6 @@ Install pythonpendencies
 pip install -r requirements.txt
 ```
 
-```sh
-export AWS_REGION="ca-central-1"
-gp env AWS_REGION="ca-central-1"
-```
-
 Add to `app.py`
 
 ```py
@@ -112,6 +107,11 @@ from aws_xray_sdk.ext.flask.middleware import XRayMiddleware
 xray_url = os.getenv("AWS_XRAY_URL")
 xray_recorder.configure(service='Cruddur', dynamic_naming=xray_url)
 XRayMiddleware(app, xray_recorder)
+```
+
+```sh
+export AWS_REGION="ca-central-1"
+gp env AWS_REGION="ca-central-1"
 ```
 
 ### Setup AWS X-Ray Resources
