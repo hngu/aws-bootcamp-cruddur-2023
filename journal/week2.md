@@ -109,6 +109,7 @@ xray_recorder.configure(service='backend-flask', dynamic_naming=xray_url)
 XRayMiddleware(app, xray_recorder)
 ```
 
+TODO - Dont know when to set this up
 ```sh
 export AWS_REGION="ca-central-1"
 gp env AWS_REGION="ca-central-1"
