@@ -126,7 +126,7 @@ Add `aws/json/xray.json`
       "Priority": 9000,
       "FixedRate": 0.1,
       "ReservoirSize": 5,
-      "ServiceName": "Cruddur",
+      "ServiceName": "backend-flask",
       "ServiceType": "*",
       "Host": "*",
       "HTTPMethod": "*",
