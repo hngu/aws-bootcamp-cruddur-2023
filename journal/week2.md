@@ -106,6 +106,9 @@ from aws_xray_sdk.ext.flask.middleware import XRayMiddleware
 
 xray_url = os.getenv("AWS_XRAY_URL")
 xray_recorder.configure(service='backend-flask', dynamic_naming=xray_url)
+
+
+# X-Ray move this under the "app" definition --------
 XRayMiddleware(app, xray_recorder)
 ```
 
