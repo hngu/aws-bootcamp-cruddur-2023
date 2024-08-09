@@ -172,6 +172,14 @@ We need to add these two env vars to our backend-flask in our `docker-compose.ym
       AWS_XRAY_DAEMON_ADDRESS: "xray-daemon:2000"
 ```
 
+
+### Check for traces
+- Run docker-compose up to run all the services
+- Check the logs for the daemon and the backend flask for any errors
+- If all is good, go to a random API endpoint like this one: https://4567-hngu-awsbootcampcrudd-6b60d74yf2o.ws-us115.gitpod.io/api/activities/home
+- Check the logs again to make sure data is sent
+- Then go to AWS and check in X-Ray -> Traces for sample traces
+
 ### Check service data for last 10 minutes
 
 ```sh
@@ -336,3 +344,6 @@ https://github.com/omenking/aws-bootcamp-cruddur-2023/blob/week-x/backend-flask/
 
 ## Observability
 - 3 pillars: metrics, traces, logs
+
+## AWS X-Ray
+- Segments/subsegments are just spans
