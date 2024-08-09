@@ -92,7 +92,7 @@ Add to the `requirements.txt`
 aws-xray-sdk
 ```
 
-Install pythonpendencies
+Install python dpendencies
 
 ```sh
 pip install -r requirements.txt
@@ -112,15 +112,9 @@ xray_recorder.configure(service='backend-flask', dynamic_naming=xray_url)
 XRayMiddleware(app, xray_recorder)
 ```
 
-TODO - Dont know when to set this up
-```sh
-export AWS_REGION="ca-central-1"
-gp env AWS_REGION="ca-central-1"
-```
-
 ### Setup AWS X-Ray Resources
 
-Add `aws/json/xray.json`
+Create `aws/json/xray.json` and add:
 
 ```json
 {
@@ -140,29 +134,23 @@ Add `aws/json/xray.json`
 }
 ```
 
+Then run the command to create an xray group:
+
 ```sh
-FLASK_ADDRESS="https://4567-${GITPOD_WORKSPACE_ID}.${GITPOD_WORKSPACE_CLUSTER_HOST}"
 aws xray create-group \
    --group-name "Cruddur" \
-   --filter-expression "service(\"$FLASK_ADDRESS\") {fault OR error}"
+   --filter-expression "service(\"backend-flask\")"
 ```
+This should create a group found at CloudWatch -> Settings -> Groups. It will group traces together by filter expression. We don't need to do this but helpful when you have several services.
 
+Then create a sampling rule using the JSON we created earlier (there is a default one, but this one will save us cost):
 ```sh
 aws xray create-sampling-rule --cli-input-json file://aws/json/xray.json
 ```
-
- [Install X-ray Daemon](https://docs.aws.amazon.com/xray/latest/devguide/xray-daemon.html)
-
-[Github aws-xray-daemon](https://github.com/aws/aws-xray-daemon)
-[X-Ray Docker Compose example](https://github.com/marjamis/xray/blob/master/docker-compose.yml)
+The created sampling rule can be found in Cloudwatch -> Settings -> X-Ray traces -> Sampling rules
 
 
-```sh
- wget https://s3.us-east-2.amazonaws.com/aws-xray-assets.us-east-2/xray-daemon/aws-xray-daemon-3.x.deb
- sudo dpkg -i **.deb
- ```
-
-### Add Deamon Service to Docker Compose
+### Add Daemon Service to Docker Compose
 
 ```yml
   xray-daemon:
