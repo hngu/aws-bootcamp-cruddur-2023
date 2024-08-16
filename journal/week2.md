@@ -205,6 +205,7 @@ pip install -r requirements.txt
 In `app.py`
 
 ```
+# CloudWatch Logs ------
 import watchtower
 import logging
 from time import strftime
@@ -218,7 +219,6 @@ console_handler = logging.StreamHandler()
 cw_handler = watchtower.CloudWatchLogHandler(log_group='cruddur')
 LOGGER.addHandler(console_handler)
 LOGGER.addHandler(cw_handler)
-LOGGER.info("some message")
 ```
 
 ```py
@@ -229,7 +229,7 @@ def after_request(response):
     return response
 ```
 
-We'll log something in an API endpoint
+We'll log something in an API endpoint. You can pass in `LOGGER` via function call.
 ```py
 LOGGER.info('Hello Cloudwatch! from  /api/activities/home')
 ```
