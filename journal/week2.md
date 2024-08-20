@@ -259,17 +259,11 @@ blinker
 rollbar
 ```
 
-Install deps
+We need to set our access token (get the token from Rollbar)
 
 ```sh
-pip install -r requirements.txt
-```
-
-We need to set our access token
-
-```sh
-export ROLLBAR_ACCESS_TOKEN=""
-gp env ROLLBAR_ACCESS_TOKEN=""
+export ROLLBAR_ACCESS_TOKEN="[ROLLBAR_TOKEN]"
+gp env ROLLBAR_ACCESS_TOKEN="[ROLLBAR_TOKEN]"
 ```
 
 Add to backend-flask for `docker-compose.yml`
@@ -278,7 +272,7 @@ Add to backend-flask for `docker-compose.yml`
 ROLLBAR_ACCESS_TOKEN: "${ROLLBAR_ACCESS_TOKEN}"
 ```
 
-Import for Rollbar
+Import for Rollbar in app.py
 
 ```py
 import rollbar
@@ -287,6 +281,7 @@ from flask import got_request_exception
 ```
 
 ```py
+# Rollbar add after app init ----- 
 rollbar_access_token = os.getenv('ROLLBAR_ACCESS_TOKEN')
 @app.before_first_request
 def init_rollbar():

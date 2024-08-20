@@ -9,7 +9,8 @@ services:
       OTEL_SERVICE_NAME: "backend-flask"
       OTEL_EXPORTER_OTLP_PROTOCOL: "http/protobuf"
       AWS_XRAY_URL: "*4567-${GITPOD_WORKSPACE_ID}.${GITPOD_WORKSPACE_CLUSTER_HOST}*"
-      AWS_XRAY_DAEMON_ADDRESS: "xray-daemon:2000"      
+      AWS_XRAY_DAEMON_ADDRESS: "xray-daemon:2000"
+      ROLLBAR_ACCESS_TOKEN: "${ROLLBAR_ACCESS_TOKEN}"      
     build: ./backend-flask
     ports:
       - "4567:4567"
