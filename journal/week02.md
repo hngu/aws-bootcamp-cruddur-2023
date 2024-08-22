@@ -342,3 +342,15 @@ https://github.com/omenking/aws-bootcamp-cruddur-2023/blob/week-x/backend-flask/
 
 ## AWS X-Ray
 - Segments/subsegments are just spans
+
+## AWS Cognito
+- User pool: for creating authentication for users of your applications (sign in, sign up, manage user data)
+- Idenitity pool: for managing authorization/access to AWS services or resources
+
+### Application best practices
+- use industry standard authentication and authorization (SAML, OpenID, OAuth 2.0, etc)
+- User management: create, modify, delete users
+- User access management: add, modify, revoke roles
+- Role based access
+- encryption of API calls
+- token lifecycle management
