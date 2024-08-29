@@ -1,5 +1,27 @@
 # Week 3 — Decentralized Authentication
 
+## Create User Pool Manually
+1. Go to Amazon Cognito and select User Pools (from hamburger menu if it is there) and then click "Create user pool"
+2. For provider types, just the pre-selected "Cognito user pool" is fine
+3. For sign-in options, select user name and email.
+4. For user name requirements, leave it blank
+5. For Password policy, select the default as that is good enough for now
+6. For Multi-factor authentication, select No MFA as that will cost us for this free project.
+7. For User account recovery, select enable Self-service account recovery with email only. We get about 60k free email delivery
+8. For Self-registration, enable for now even though we will not use hosted UI
+9. For Cognito-assisted verification and confirmation, Allow Cognito to send messages to verify and confirm and send email to verify email address
+10. For Verifying attribute changes, keep original value when update is pending, and only for email address.
+11. For Required attributes, we want email and name.
+12. Skip custom attributes
+13. For email, select send Email with Cognito for now. We need to setup Amazon SES in order to use the recommended approach
+14. SES region, leave it as default
+15. For verification email, take the default
+16. leave reply-to email blank
+17. For user pool name, name it cruddur-user-pool
+18. For Hosted authentication pages, do not use Hosted UI
+19. For Initial app client, select Other client and for App client name, call it cruddur and do not generate client secret.
+20. 
+
 ## Install AWS Amplify
 
 ```sh
