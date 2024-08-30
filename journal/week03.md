@@ -28,10 +28,6 @@
 npm i aws-amplify --save
 ```
 
-## Provision Cognito User Group
-
-Using the AWS Console we'll create a Cognito User Group
-
 ## Configure Amplify
 
 We need to hook up our cognito pool to our code in the `App.js`
