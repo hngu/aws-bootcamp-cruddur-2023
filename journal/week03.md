@@ -65,6 +65,7 @@ Then you will need to setup the environment variables listed above in the docker
 Inside our `HomeFeedPage.js`
 
 ```js
+// import this at the top
 import { Auth } from 'aws-amplify';
 
 // set a state
@@ -89,20 +90,8 @@ const checkAuth = async () => {
   })
   .catch((err) => console.log(err));
 };
-
-// check when the page loads if we are authenicated
-React.useEffect(()=>{
-  loadData();
-  checkAuth();
-}, [])
 ```
 
-We'll want to pass user to the following components:
-
-```js
-<DesktopNavigation user={user} active={'home'} setPopped={setPopped} />
-<DesktopSidebar user={user} />
-```
 
 We'll rewrite `DesktopNavigation.js` so that it it conditionally shows links in the left hand column
 on whether you are logged in or not.
@@ -236,13 +225,11 @@ export default function DesktopSidebar(props) {
 ```js
 import { Auth } from 'aws-amplify';
 
-const [cognitoErrors, setCognitoErrors] = React.useState('');
-
 const onsubmit = async (event) => {
-  setCognitoErrors('')
+  setErrors('')
   event.preventDefault();
   try {
-    Auth.signIn(username, password)
+    Auth.signIn(email, password)
       .then(user => {
         localStorage.setItem("access_token", user.signInUserSession.accessToken.jwtToken)
         window.location.href = "/"
@@ -252,18 +239,11 @@ const onsubmit = async (event) => {
     if (error.code == 'UserNotConfirmedException') {
       window.location.href = "/confirm"
     }
-    setCognitoErrors(error.message)
+    setErrors(error.message)
   }
   return false
 }
 
-let errors;
-if (cognitoErrors){
-  errors = <div className='errors'>{cognitoErrors}</div>;
-}
-
-// just before submit component
-{errors}
 ```
 
 ## Signup Page
@@ -271,11 +251,9 @@ if (cognitoErrors){
 ```js
 import { Auth } from 'aws-amplify';
 
-const [cognitoErrors, setCognitoErrors] = React.useState('');
-
 const onsubmit = async (event) => {
   event.preventDefault();
-  setCognitoErrors('')
+  setErrors('')
   try {
       const { user } = await Auth.signUp({
         username: email,
@@ -293,7 +271,7 @@ const onsubmit = async (event) => {
       window.location.href = `/confirm?email=${email}`
   } catch (error) {
       console.log(error);
-      setCognitoErrors(error.message)
+      setErrors(error.message)
   }
   return false
 }
