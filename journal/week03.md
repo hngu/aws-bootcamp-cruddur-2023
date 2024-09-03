@@ -58,7 +58,6 @@ Then you will need to setup the environment variables listed above in the docker
       REACT_APP_AWS_COGNITO_REGION: "${AWS_DEFAULT_REGION}"
       REACT_APP_AWS_USER_POOLS_ID: "<OMITTED>"
       REACT_APP_CLIENT_ID: "<OMITTED>"
-      REACT_APP_AWS_USER_POOLS_WEB_CLIENT_ID: ""
 ```
 
 ## Conditionally show components based on logged in or logged out
