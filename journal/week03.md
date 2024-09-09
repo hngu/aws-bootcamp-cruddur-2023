@@ -246,6 +246,12 @@ const onsubmit = async (event) => {
 
 ```
 
+To reset password for a manually created user:
+```
+aws cognito-idp admin-set-user-password --username <%USERNAME%> --password <%PASSWORD%> --user-pool-id <%USER_POOL_ID%> --permanent 
+```
+
+
 ## Signup Page
 
 ```js
