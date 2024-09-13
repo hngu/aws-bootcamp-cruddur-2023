@@ -3,7 +3,7 @@
 ## Create User Pool Manually
 1. Go to Amazon Cognito and select User Pools (from hamburger menu if it is there) and then click "Create user pool"
 2. For provider types, just the pre-selected "Cognito user pool" is fine
-3. For sign-in options, select user name and email.
+3. For sign-in options, select email only.
 4. For user name requirements, leave it blank
 5. For Password policy, select the default as that is good enough for now
 6. For Multi-factor authentication, select No MFA as that will cost us for this free project.
@@ -19,7 +19,7 @@
 16. leave reply-to email blank
 17. For user pool name, name it cruddur-user-pool
 18. For Hosted authentication pages, do not use Hosted UI
-19. For Initial app client, select Other client and for App client name, call it cruddur and do not generate client secret.
+19. For Initial app client, select Public client and for App client name, call it cruddur and do not generate client secret.
 20. 
 
 ## Install AWS Amplify
@@ -281,19 +281,13 @@ const onsubmit = async (event) => {
   }
   return false
 }
-
-let errors;
-if (cognitoErrors){
-  errors = <div className='errors'>{cognitoErrors}</div>;
-}
-
-//before submit component
-{errors}
 ```
 
 ## Confirmation Page
 
 ```js
+import { Auth } from 'aws-amplify';
+
 const resend_code = async (event) => {
   setCognitoErrors('')
   try {
@@ -325,6 +319,8 @@ const onsubmit = async (event) => {
   return false
 }
 ```
+
+Then test the sign up flow. You will get an email verification with a code. After verifying, you have to sign in again (this is a bug in the code right now)
 
 ## Recovery Page
 
