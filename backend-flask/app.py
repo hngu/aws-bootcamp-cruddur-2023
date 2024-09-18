@@ -18,6 +18,9 @@ from services.create_message import *
 from services.show_activity import *
 from services.notifications_activities import *
 
+### Flask AWSCognito library
+from flask_awscognito import AWSCognitoAuthentication
+
 # Honeycomb ------------------
 from opentelemetry import trace
 from opentelemetry.instrumentation.flask import FlaskInstrumentor
@@ -51,18 +54,24 @@ RequestsInstrumentor().instrument()
 # X-Ray
 XRayMiddleware(app, xray_recorder)
 
+# Flask AWSCognito
+app.config['AWS_DEFAULT_REGION'] = os.getenv("AWS_DEFAULT_REGION")
+app.config['AWS_COGNITO_USER_POOL_ID'] = os.getenv("AWS_COGNITO_USER_POOL_ID")
+app.config['AWS_COGNITO_USER_POOL_CLIENT_ID'] = os.getenv("AWS_COGNITO_USER_POOL_CLIENT_ID")
+aws_auth = AWSCognitoAuthentication(app)
+
 frontend = os.getenv('FRONTEND_URL')
 backend = os.getenv('BACKEND_URL')
 origins = [frontend, backend]
 cors = CORS(
-  app, 
+  app,
   resources={r"/api/*": {"origins": origins}},
-  expose_headers="location,link",
-  allow_headers="content-type,if-modified-since",
+  headers=['Content-Type', 'Authorization'],
+  expose_headers='Authorization',
   methods="OPTIONS,GET,HEAD,POST"
 )
 
-# Rollbar add after app init ----- 
+# Rollbar add after app init -----
 # rollbar_access_token = os.getenv('ROLLBAR_ACCESS_TOKEN')
 # with app.app_context():
 #     """init rollbar module"""
@@ -82,7 +91,7 @@ cors = CORS(
 # @app.route('/rollbar/test')
 # def rollbar_test():
 #     rollbar.report_message('Hello World!', 'warning')
-#     return "Hello World!"    
+#     return "Hello World!"
 
 @app.route("/api/message_groups", methods=['GET'])
 def data_message_groups():
@@ -120,14 +129,18 @@ def data_create_message():
   return
 
 @app.route("/api/activities/home", methods=['GET'])
+@aws_auth.authentication_required
 def data_home():
+  claims = aws_auth.claims
+  app.logger.info("claims")
+  app.logger.info(claims)
   data = HomeActivities.run()
   return data, 200
 
 @app.route("/api/activities/notifications", methods=['GET'])
 def data_notifications():
   data = NotificationActivities.run()
-  return data, 200  
+  return data, 200
 
 @app.route("/api/activities/@<string:handle>", methods=['GET'])
 def data_handle(handle):

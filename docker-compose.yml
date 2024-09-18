@@ -10,7 +10,9 @@ services:
       OTEL_EXPORTER_OTLP_PROTOCOL: "http/protobuf"
       AWS_XRAY_URL: "*4567-${GITPOD_WORKSPACE_ID}.${GITPOD_WORKSPACE_CLUSTER_HOST}*"
       AWS_XRAY_DAEMON_ADDRESS: "xray-daemon:2000"
-      ROLLBAR_ACCESS_TOKEN: "${ROLLBAR_ACCESS_TOKEN}"      
+      ROLLBAR_ACCESS_TOKEN: "${ROLLBAR_ACCESS_TOKEN}"
+      AWS_COGNITO_USER_POOL_ID: "us-east-1_ikUKX84R1"
+      AWS_COGNITO_USER_POOL_CLIENT_ID: "1od7pfsjgdmh3liuvf7pkpmdk9"
     build: ./backend-flask
     ports:
       - "4567:4567"
@@ -38,7 +40,7 @@ services:
     command:
       - "xray -o -b xray-daemon:2000"
     ports:
-      - 2000:2000/udp      
+      - 2000:2000/udp
   dynamodb-local:
     # https://stackoverflow.com/questions/67533058/persist-local-dynamodb-data-in-volumes-lack-permission-unable-to-open-databa
     # We needed to add user:root to get this working.
@@ -50,7 +52,7 @@ services:
       - "8000:8000"
     volumes:
       - "./docker/dynamodb:/home/dynamodblocal/data"
-    working_dir: /home/dynamodblocal      
+    working_dir: /home/dynamodblocal
   db:
     image: postgres:13-alpine
     restart: always
@@ -58,13 +60,13 @@ services:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=password
     ports:
-      - '5432:5432'
-    volumes: 
-      - db:/var/lib/postgresql/data      
+      - "5432:5432"
+    volumes:
+      - db:/var/lib/postgresql/data
 
 # the name flag is a hack to change the default prepend folder
 # name when outputting the image names
-networks: 
+networks:
   internal-network:
     driver: bridge
     name: cruddur

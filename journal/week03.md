@@ -20,7 +20,7 @@
 17. For user pool name, name it cruddur-user-pool
 18. For Hosted authentication pages, do not use Hosted UI
 19. For Initial app client, select Public client and for App client name, call it cruddur and do not generate client secret.
-20. 
+20.
 
 ## Install AWS Amplify
 
@@ -74,10 +74,10 @@ const [user, setUser] = React.useState(null);
 // check if we are authenicated
 const checkAuth = async () => {
   Auth.currentAuthenticatedUser({
-    // Optional, By default is false. 
-    // If set to true, this call will send a 
+    // Optional, By default is false.
+    // If set to true, this call will send a
     // request to Cognito to get the latest user data
-    bypassCache: false 
+    bypassCache: false
   })
   .then((user) => {
     console.log('user',user);
@@ -115,18 +115,18 @@ export default function DesktopNavigation(props) {
   if (props.user) {
     button = <CrudButton setPopped={props.setPopped} />;
     profile = <ProfileInfo user={props.user} />;
-    notificationsLink = <DesktopNavigationLink 
-      url="/notifications" 
-      name="Notifications" 
-      handle="notifications" 
+    notificationsLink = <DesktopNavigationLink
+      url="/notifications"
+      name="Notifications"
+      handle="notifications"
       active={props.active} />;
-    messagesLink = <DesktopNavigationLink 
+    messagesLink = <DesktopNavigationLink
       url="/messages"
       name="Messages"
-      handle="messages" 
+      handle="messages"
       active={props.active} />
-    profileLink = <DesktopNavigationLink 
-      url="/@andrewbrown" 
+    profileLink = <DesktopNavigationLink
+      url="/@andrewbrown"
       name="Profile"
       handle="profile"
       active={props.active} />
@@ -135,15 +135,15 @@ export default function DesktopNavigation(props) {
   return (
     <nav>
       <Logo className='logo' />
-      <DesktopNavigationLink url="/" 
+      <DesktopNavigationLink url="/"
         name="Home"
         handle="home"
         active={props.active} />
       {notificationsLink}
       {messagesLink}
       {profileLink}
-      <DesktopNavigationLink url="/#" 
-        name="More" 
+      <DesktopNavigationLink url="/#"
+        name="More"
         handle="more"
         active={props.active} />
       {button}
@@ -248,7 +248,7 @@ const onsubmit = async (event) => {
 
 To reset password for a manually created user:
 ```
-aws cognito-idp admin-set-user-password --username <%USERNAME%> --password <%PASSWORD%> --user-pool-id <%USER_POOL_ID%> --permanent 
+aws cognito-idp admin-set-user-password --username <%USERNAME%> --password <%PASSWORD%> --user-pool-id <%USER_POOL_ID%> --permanent
 ```
 
 
@@ -300,9 +300,9 @@ const resend_code = async (event) => {
     // for this to be an okay match?
     console.log(err)
     if (err.message == 'Username cannot be empty'){
-      setCognitoErrors("You need to provide an email in order to send Resend Activiation Code")   
+      setCognitoErrors("You need to provide an email in order to send Resend Activiation Code")
     } else if (err.message == "Username/client id combination not found."){
-      setCognitoErrors("Email is invalid or cannot be found.")   
+      setCognitoErrors("Email is invalid or cannot be found.")
     }
   }
 }
@@ -351,7 +351,7 @@ const onsubmit_confirm_code = async (event) => {
 
 ## Authenticating Server Side
 
-Add in the `HomeFeedPage.js` a header eto pass along the access token
+Add in the `HomeFeedPage.js` a header to pass along the access token in the fetch call:
 
 ```js
   headers: {
@@ -359,14 +359,18 @@ Add in the `HomeFeedPage.js` a header eto pass along the access token
   }
 ```
 
+The backend flask will verify the access token to see it is from Cognito and is correct.
+
 In the `app.py`
 
 ```py
 cors = CORS(
-  app, 
+  app,
   resources={r"/api/*": {"origins": origins}},
-  headers=['Content-Type', 'Authorization'], 
+  headers=['Content-Type', 'Authorization'],
   expose_headers='Authorization',
   methods="OPTIONS,GET,HEAD,POST"
 )
 ```
+
+Then install `Flask-AWSCognito` python library by including it in the requirements.txt and follow installation instructions here: https://pypi.org/project/Flask-AWSCognito/
