@@ -18,8 +18,7 @@ from services.create_message import *
 from services.show_activity import *
 from services.notifications_activities import *
 
-### Flask AWSCognito library
-from flask_awscognito import AWSCognitoAuthentication
+from lib.cognito_jwt_token import CognitoJwtToken, TokenVerifyError, extract_access_token
 
 # Honeycomb ------------------
 from opentelemetry import trace
@@ -54,11 +53,11 @@ RequestsInstrumentor().instrument()
 # X-Ray
 XRayMiddleware(app, xray_recorder)
 
-# Flask AWSCognito
-app.config['AWS_DEFAULT_REGION'] = os.getenv("AWS_DEFAULT_REGION")
-app.config['AWS_COGNITO_USER_POOL_ID'] = os.getenv("AWS_COGNITO_USER_POOL_ID")
-app.config['AWS_COGNITO_USER_POOL_CLIENT_ID'] = os.getenv("AWS_COGNITO_USER_POOL_CLIENT_ID")
-aws_auth = AWSCognitoAuthentication(app)
+cognito_token_verification = CognitoJwtToken(
+  user_pool_id=os.getenv('AWS_COGNITO_USER_POOL_ID'),
+  user_pool_client_id=os.getenv('AWS_COGNITO_USER_POOL_CLIENT_ID'),
+  region=os.getenv('AWS_DEFAULT_REGION')
+)
 
 frontend = os.getenv('FRONTEND_URL')
 backend = os.getenv('BACKEND_URL')
@@ -129,11 +128,14 @@ def data_create_message():
   return
 
 @app.route("/api/activities/home", methods=['GET'])
-@aws_auth.authentication_required
 def data_home():
-  claims = aws_auth.claims
-  app.logger.info("claims")
-  app.logger.info(claims)
+  access_token = extract_access_token(request.headers)
+  try:
+      claims = cognito_token_verification.verify(access_token)
+      app.logger.info(f"claims: {claims}")
+  except TokenVerifyError as e:
+      app.logger.info(f"error: {e}")
+
   data = HomeActivities.run()
   return data, 200
 
