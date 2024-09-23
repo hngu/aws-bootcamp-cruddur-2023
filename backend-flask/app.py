@@ -132,9 +132,10 @@ def data_home():
   access_token = extract_access_token(request.headers)
   try:
       claims = cognito_token_verification.verify(access_token)
-      app.logger.info(f"claims: {claims}")
+      app.logger.debug(f"claims: {claims}")
+      print(f"claims: {claims}", flush=True)
   except TokenVerifyError as e:
-      app.logger.info(f"error: {e}")
+      app.logger.debug(f"error: {e}")
 
   data = HomeActivities.run()
   return data, 200

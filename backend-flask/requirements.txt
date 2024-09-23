@@ -8,3 +8,4 @@ opentelemetry-instrumentation-requests
 aws-xray-sdk
 blinker
 rollbar
+python-jose
